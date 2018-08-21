@@ -13,7 +13,7 @@ import { FirebaseObjectObservable } from 'angularfire2/database';
 })
 export class AlbumDetailComponent implements OnInit {
   albumId: string;
-  albumToDisplay;
+  albumToDisplay: Album;
   constructor(
     private route: ActivatedRoute, 
     private location: Location,
@@ -24,7 +24,10 @@ export class AlbumDetailComponent implements OnInit {
     this.route.params.forEach ((urlParameters) => {
       this.albumId = urlParameters['id'];
     });
-    this.albumToDisplay = this.albumService.getAlbumById(this.albumId);
+   this.albumService.getAlbumById(this.albumId).subscribe(lastDataFromObserver => {
+     this.albumToDisplay = new Album(lastDataFromObserver.title,
+                                     lastDataFromObserver.artist,
+                                     lastDataFromObserver.descrption)
+   })
   }
-
 }
